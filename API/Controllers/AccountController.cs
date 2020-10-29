@@ -5,6 +5,7 @@ using API.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
+using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,7 +24,7 @@ namespace API.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<ActionResult<UserDto>> Register(RegisterDTOs registerDto)
+        public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
         {
             if (await UserExist(registerDto.Username)) return BadRequest("UserName already taken.");
 
@@ -49,9 +50,13 @@ namespace API.Controllers
         [HttpPost("login")]
         public async Task<ActionResult<UserDto>> Login(LoginDTO loginDto)
         {
+            if (loginDto.Username == null) return Unauthorized("Missing Username!");
+            if (loginDto.Password == null) return Unauthorized("Missing Password!");
+        
             var user = await _context.Users.SingleOrDefaultAsync(x => x.UserName == loginDto.Username);
-            if (user == null) return Unauthorized("Invalid Username!");
-            using var hmac = new HMACSHA512(user.PasswordSalt);
+            if (user == null) return Unauthorized("Username not Found");
+           
+            using var hmac = new HMACSHA512(user.PasswordSalt);            
             var computeHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(loginDto.Password));
 
             for (int i = 0; i < computeHash.Length; i++)
