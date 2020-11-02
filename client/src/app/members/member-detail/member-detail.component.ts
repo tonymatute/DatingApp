@@ -32,15 +32,15 @@ export class MemberDetailComponent implements OnInit {
   }
 
   getImages(): NgxGalleryImage[] {
-    const imageUrl = [];
+    const imageUrls = [];
     for (const photo of this.member.photos) {
-      imageUrl.push({
+      imageUrls.push({
         small: photo?.url,
         medium: photo?.url,
         big: photo?.url
-      });
-      return imageUrl;
+      });      
     }
+    return imageUrls;
   }
 
 

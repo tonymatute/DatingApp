@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -44,7 +45,7 @@ namespace API.Controllers
                 Username = user.UserName,
                 Token = _tokenService.CreateToken(user)
             };
-                
+
         }
 
         [HttpPost("login")]
@@ -52,11 +53,14 @@ namespace API.Controllers
         {
             if (loginDto.Username == null) return Unauthorized("Missing Username!");
             if (loginDto.Password == null) return Unauthorized("Missing Password!");
-        
-            var user = await _context.Users.SingleOrDefaultAsync(x => x.UserName == loginDto.Username);
+
+            var user = await _context.Users
+                .Include(p => p.Photos)
+                .SingleOrDefaultAsync(x => x.UserName == loginDto.Username);
+            
             if (user == null) return Unauthorized("Username not Found");
-           
-            using var hmac = new HMACSHA512(user.PasswordSalt);            
+
+            using var hmac = new HMACSHA512(user.PasswordSalt);
             var computeHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(loginDto.Password));
 
             for (int i = 0; i < computeHash.Length; i++)
@@ -68,7 +72,8 @@ namespace API.Controllers
             return new UserDto
             {
                 Username = user.UserName,
-                Token = _tokenService.CreateToken(user)
+                Token = _tokenService.CreateToken(user),
+                PhotoUrl = user.Photos.FirstOrDefault(a => a.IsMain == true)?.Url
             };
         }
 
