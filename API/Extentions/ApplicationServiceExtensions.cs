@@ -14,6 +14,7 @@ namespace API.Extentions {
             services.AddScoped<ITokenService, TokenService> ();
             services.AddScoped<IPhotoService, PhotoService> ();
             services.AddScoped<IUserRepository, UserRepository> ();
+            services.AddScoped<LogUserActivity>();
             services.AddAutoMapper (typeof (AutomapperProfiles).Assembly);
             services.AddDbContext<DataContext> (options => {
                 options.UseSqlServer (config.GetConnectionString ("DefaultConnection"));
