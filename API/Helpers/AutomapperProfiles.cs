@@ -3,7 +3,6 @@ using API.Entities;
 using API.Extentions;
 using AutoMapper;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 
 namespace API.Helpers
 {

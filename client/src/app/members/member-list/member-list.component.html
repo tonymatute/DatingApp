@@ -5,17 +5,17 @@
     <form #form="ngForm" class="form-inline mb-3" (ngSubmit)="loadMembers()" autocomplete="off">
         <div class="form-group">
             <label>Age From: </label>
-            <input type="number" class="from-control ml-1" style="width: 70px;" name="minAge"
+            <input type="number" class="from-control ml-1" style="width: 40px;" name="minAge"
                 [(ngModel)]="userParams.minAge">
         </div>
         <div class="form-group px-2">
             <label>Age To: </label>
-            <input type="number" class="from-control ml-1" style="width: 70px;" name="maxAge"
+            <input type="number" class="from-control ml-1" style="width: 40px;" name="maxAge"
                 [(ngModel)]="userParams.maxAge">
         </div>
         <div class="form-group px-2">
             <label>Show: </label>
-            <select name="gender" [(ngModel)]="userParams.gender" style="width: 130px;" class="form-control ml-1">
+            <select name="gender" [(ngModel)]="userParams.gender" style="width: 110px;" class="form-control ml-1">
                 <option *ngFor="let gender of genderList" [value]="gender.value">
                     {{gender.display}}
                 </option>
@@ -24,7 +24,7 @@
         <button class="btn btn-primary ml-1" type="submit">Apply Filter</button>
         <button class="btn btn-info ml-1" (click)="resetFilter()" type="submit">Reset Filter</button>
 
-        <div class="col">
+        <div class="ml-3">
             <div class="btn-group float-right">
                 <button type="button" name="orderBy" (click)="loadMembers()" btnRadio="lastActive"
                     [(ngModel)]="userParams.orderBy" class="btn btn-primary">Last Active</button>
