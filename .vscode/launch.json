@@ -4,15 +4,6 @@
    // For further information visit https://github.com/OmniSharp/omnisharp-vscode/blob/master/debugger-launchjson.md
    "version": "0.2.0",
    "configurations": [
-       {
-           "name": "Attach by Process ID",
-           "processId": "${command:PickProcess}",
-           "request": "attach",
-           "skipFiles": [
-               "<node_internals>/**"
-           ],
-           "type": "pwa-node"
-       },
         {
             "name": ".NET Core Launch (web)",
             "type": "coreclr",
