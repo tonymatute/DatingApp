@@ -9,7 +9,7 @@ namespace API.Interfaces
     public interface ILikeRepository
     {
         Task<UserLike> GetUserLike(int sourceUserId, int likeUserId);
-        Task<AppUsers> GetUserWithLikes(int userId);
+        Task<AppUser> GetUserWithLikes(int userId);
         Task<PageList<LikeDTO>> GetUserLikes(LikesParams likesParams);
     }
 }
