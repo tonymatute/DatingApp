@@ -23,6 +23,11 @@ namespace API.Data
             _mapper = mapper;
         }
 
+        public void AddGroup(Group group)
+        {
+            _context.Groups.Add(group);
+        }
+
         public void AddMessage(Message message)
         {
             _context.Messages.Add(message);
@@ -33,12 +38,32 @@ namespace API.Data
             _context.Messages.Remove(message);
         }
 
+        public async Task<Connection> GetConnection(string connectionId)
+        {
+            return await _context.Connections.FindAsync(connectionId);
+        }
+
+        public async Task<Group> GetGroupForConnection(string connectionId)
+        {
+            return await _context.Groups
+                .Include(c => c.Connections)
+                .Where(c => c.Connections.Any(x => x.ConnectionId == connectionId))
+                .FirstOrDefaultAsync();
+        }
+
         public async Task<Message> GetMessage(int id)
         {
             return await _context.Messages
                 .Include(u => u.Sender)
                 .Include(u => u.Recipient)
                 .SingleOrDefaultAsync(x => x.Id == id);
+        }
+
+        public async Task<Group> GetMessageGroup(string groupName)
+        {
+            return await _context.Groups
+                .Include(g => g.Connections)
+                .FirstOrDefaultAsync(global => global.Name == groupName);
         }
 
         public async Task<PageList<MessageDto>> GetMessagesForUser(MessageParams messageParams)
@@ -79,13 +104,18 @@ namespace API.Data
             {
                 foreach(var message in messages)
                 {
-                    message.DateRead = DateTime.Now;
+                    message.DateRead = DateTime.UtcNow;
                 }
 
                 await _context.SaveChangesAsync();
             }
 
             return _mapper.Map<IEnumerable<MessageDto>>(messages);
+        }
+
+        public void RemoveConnection(Connection connection)
+        {
+            _context.Connections.Remove(connection);
         }
 
         public async Task<bool> SaveAllAsync()

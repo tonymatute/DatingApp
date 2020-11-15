@@ -6,7 +6,7 @@ namespace API.Extentions
     {
         public static int CalculateAge(this DateTime dob)
         {
-            var today = DateTime.Now;
+            var today = DateTime.UtcNow;
             var age = today.Year - dob.Year;
             if (dob.Date > today.AddYears(-age)) age--;
             return age;
