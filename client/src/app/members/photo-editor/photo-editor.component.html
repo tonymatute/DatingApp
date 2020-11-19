@@ -1,10 +1,13 @@
 <div class="row">
-    <div class="col-2" *ngFor="let photo of member.photos">
-        <img src="{{photo.url}}" alt="{{photo.url}}" class="img-thumbnail p-1 mt-3">
+    <div class="col-2 img-wrapper" *ngFor="let photo of member.photos">
+        <img src="{{photo.url}}" alt="{{photo.url}}" class="img-thumbnail p-1 mt-3" [class.not-approved]='!photo.isApproved' >
+        <div class="text-center">
+            <span class="text-center img-text" *ngIf="!photo.isApproved">Awaiting for approval</span>
+        </div>
         <div class="text-center">
             <button 
                 class="btn btn-sm "
-                [disabled]="photo.isMain"
+                [disabled]="photo.isMain || !photo.isApproved"
                 (click)="setMainPhoto(photo)"
                 [ngClass]='photo.isMain ? "btn-success active" : "btn-outline-success"' 
             >Main
