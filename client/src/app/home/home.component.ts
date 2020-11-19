@@ -8,6 +8,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
   registerMode = false;
+  loginMode = false;
+  formMode = false;
 
   constructor() { }
 
@@ -15,11 +17,22 @@ export class HomeComponent implements OnInit {
    
   }
 
-  registerToggle(){
-    this.registerMode= !this.registerMode;
+ loginToggle(){
+   this.loginMode = !this.loginMode;
+   this.formMode = this.loginMode;
+  }
+  registerToggle() {
+    this.registerMode = !this.registerMode;
+    this.formMode = this.registerMode;
   }
 
   cancelRegisterMode(event: boolean) {
     this.registerMode = event;
+    this.formMode = this.registerMode;
+  }
+
+  cancelLoginMode(event: boolean) {
+    this.loginMode = event;
+    this.formMode = this.loginMode;
   }
 }

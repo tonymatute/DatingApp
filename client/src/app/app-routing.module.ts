@@ -4,6 +4,7 @@ import { AdminPanelComponent } from './admin/admin-panel/admin-panel.component';
 import { NotFoundComponent } from './errors/not-found/not-found.component';
 import { ServerErrorComponent } from './errors/server-error/server-error.component';
 import { TestErrorsComponent } from './errors/test-errors/test-errors.component';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { HomeComponent } from './home/home.component';
 import { ListComponent } from './list/list.component';
 import { MemberDetailComponent } from './members/member-detail/member-detail.component';
@@ -33,6 +34,7 @@ const routes: Routes = [
   { path: 'errors', component: TestErrorsComponent },
   { path: 'server-error', component: ServerErrorComponent },
   { path: 'not-found', component: NotFoundComponent },
+  { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: '**', component: NotFoundComponent, pathMatch: 'full' }
 ];
 
