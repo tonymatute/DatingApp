@@ -13,6 +13,7 @@ export class PhotoManagementComponent implements OnInit {
   constructor(private adminService: AdminService) { }
 
   ngOnInit(): void {
+    this.getPhotosForApproval();
   }
 
   getPhotosForApproval() {
