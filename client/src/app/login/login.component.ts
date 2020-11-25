@@ -18,7 +18,6 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private accountService: AccountService,
-    private toastr: ToastrService,
     private fb: FormBuilder,
     private router: Router) { }
  

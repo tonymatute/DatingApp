@@ -22,6 +22,7 @@ export class RegisterComponent implements OnInit {
   registerForm: FormGroup;
   maxDate: Date;
   validationErrors: string[] = [];
+  
 
   constructor(
     private accountService: AccountService,
@@ -44,7 +45,7 @@ export class RegisterComponent implements OnInit {
       country: ['', Validators.required],
       password: [
         '',
-        [Validators.required, Validators.minLength(4), Validators.maxLength(8)],
+        [Validators.required, Validators.minLength(8), Validators.maxLength(20)],
       ],
       confirmPassword: [
         '',
@@ -80,7 +81,7 @@ export class RegisterComponent implements OnInit {
   register() {
     this.accountService.register(this.registerForm.value).subscribe(
       (response) => {
-        this.router.navigateByUrl('/members');
+        this.router.navigateByUrl('/confirmation-email-sent');
       },
       (error) => {
         this.validationErrors = error;
@@ -88,6 +89,6 @@ export class RegisterComponent implements OnInit {
     );
   }
   cancel() {
-    this.cancelRegister.emit(false);
+    this.router.navigateByUrl('/');
   }
 }

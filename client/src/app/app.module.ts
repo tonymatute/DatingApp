@@ -34,6 +34,12 @@ import { RolesModalComponent } from './modals/roles-modal/roles-modal.component'
 import { ConfirmDialogComponent } from './modals/confirm-dialog/confirm-dialog.component';
 import { LoginComponent } from './login/login.component';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { CookieService } from 'ngx-cookie-service';
+import { ConfirmEmailComponent } from './confirm-email/confirm-email.component';
+import { ConfirmationEmailSentComponent } from './confirmation-email-sent/confirmation-email-sent.component';
+import { ConfirmPasswordSentComponent } from './confirm-password-sent/confirm-password-sent.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { ResetPasswordCompleteComponent } from './reset-password-complete/reset-password-complete.component';
 
 @NgModule({
   declarations: [
@@ -61,7 +67,12 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
     RolesModalComponent,
     ConfirmDialogComponent,
     LoginComponent,
-    ForgotPasswordComponent
+    ForgotPasswordComponent,
+    ConfirmEmailComponent,
+    ConfirmationEmailSentComponent,
+    ConfirmPasswordSentComponent,
+    ResetPasswordComponent,
+    ResetPasswordCompleteComponent
   ],
   imports: [
     BrowserModule,
@@ -76,7 +87,8 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }, 
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true },
+    CookieService
   ],
   bootstrap: [AppComponent]
 })

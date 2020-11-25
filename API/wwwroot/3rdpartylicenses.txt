@@ -154,6 +154,9 @@ SOFTWARE.
 
 ngx-bootstrap/datepicker
 
+ngx-cookie-service
+MIT
+
 ngx-spinner
 MIT
 

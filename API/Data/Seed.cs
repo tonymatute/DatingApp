@@ -40,10 +40,15 @@ namespace API.Data
 
             var admin = new AppUser
             {
-                UserName = "admin"
+                UserName = "admin",
+                EmailConfirmed = true
+                
             };
 
+            // Create Admin User and confirm email flag to true
             await userManager.CreateAsync(admin, "Pa$$w0rd");
+            var token = await userManager.GenerateEmailConfirmationTokenAsync(admin);
+            await userManager.ConfirmEmailAsync(admin, token);
             await userManager.AddToRolesAsync(admin, new[] { "Admin", "Moderator" });
 
         }

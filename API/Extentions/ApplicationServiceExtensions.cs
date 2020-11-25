@@ -40,7 +40,6 @@ namespace API.Extentions
                    var connUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
 
                    // Parse connection URL to connection string for Npgsql
-                   connUrl = "postgres://qrovpjpsbszycz:ecf199890cfc7e85e4f3ac93a95916df362101fde3373f15587595e02bc9b96d@ec2-3-231-46-238.compute-1.amazonaws.com:5432/d6pbl4r82r1u04";
                    connUrl = connUrl.Replace("postgres://", string.Empty);
                    var pgUserPass = connUrl.Split("@")[0];
                    var pgHostPortDb = connUrl.Split("@")[1];

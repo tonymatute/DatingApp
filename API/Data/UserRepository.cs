@@ -33,9 +33,7 @@ namespace API.Data
             if (isCurrentUser) query = query.IgnoreQueryFilters();
 
             return await query.FirstOrDefaultAsync();
-        }
-
-       
+        }       
 
         public async Task<PageList<MemberDto>> GetMembersAsync(UserParams userParams)
         {
@@ -58,6 +56,14 @@ namespace API.Data
                 query.ProjectTo<MemberDto>(_mapper.ConfigurationProvider).AsNoTracking(), 
                 userParams.PageNumber, 
                 userParams.PageSize);
+        }
+
+        public async Task<AppUser> GetUserByEmailAsync(string email)
+        {
+            return await _context.Users
+               .IgnoreQueryFilters()
+               .Where(e => e.Email == email)
+               .FirstOrDefaultAsync();
         }
 
         public async Task<AppUser> GetUserByIdAsync(int id)

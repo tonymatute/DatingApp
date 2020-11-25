@@ -24,5 +24,6 @@ namespace API.DTOs
         public string Password { get; set; }
         [Required]
         public string Email { get; set; }
+        public bool confirmedEmail { get; set; }
     }
 }
