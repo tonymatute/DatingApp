@@ -57,7 +57,18 @@ namespace API.Controllers
 
             if (!result.Succeeded) return BadRequest(result.Errors);
             var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-            var uriBuilder = new UriBuilder(_config["returnPaths:ConfirmEmail"]);
+
+            string urlPath = "";
+            var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+            if (env.ToLower() == "development")
+            {
+                urlPath = _config["returnPaths:ConfirmEmail"];
+            }
+            else
+            {
+                urlPath = Environment.GetEnvironmentVariable("ReturnPaths:ConfirmEmail");
+            }
+            var uriBuilder = new UriBuilder(urlPath);
             var query = HttpUtility.ParseQueryString(uriBuilder.Query);
             query["token"] = token;
             query["userid"] = user.Id.ToString();
@@ -138,7 +149,17 @@ namespace API.Controllers
             if (user == null) return Unauthorized("Username not Found");
 
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-            var uriBuilder = new UriBuilder(_config["returnPaths:PasswordChange"]);
+            string urlPath = "";
+            var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+            if (env.ToLower() == "development")
+            {
+                urlPath = _config["returnPaths:ConfirmEmail"];
+            }
+            else
+            {
+                urlPath = Environment.GetEnvironmentVariable("ReturnPaths:ConfirmEmail");                
+            }
+            var uriBuilder = new UriBuilder(urlPath);
             var query = HttpUtility.ParseQueryString(uriBuilder.Query);
             query["token"] = token;
             query["userid"] = user.Id.ToString();
