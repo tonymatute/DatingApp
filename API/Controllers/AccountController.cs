@@ -153,11 +153,11 @@ namespace API.Controllers
             var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
             if (env.ToLower() == "development")
             {
-                urlPath = _config["returnPaths:ConfirmEmail"];
+                urlPath = _config["returnPaths:PasswordChange"];
             }
             else
             {
-                urlPath = Environment.GetEnvironmentVariable("ReturnPaths:ConfirmEmail");                
+                urlPath = Environment.GetEnvironmentVariable("ReturnPaths:PasswordChange");                
             }
             var uriBuilder = new UriBuilder(urlPath);
             var query = HttpUtility.ParseQueryString(uriBuilder.Query);
