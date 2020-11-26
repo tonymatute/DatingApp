@@ -13,7 +13,20 @@ namespace EmailService
 
         public EmailSender(EmailConfiguration emailConfig)
         {
-            _emailConfig = emailConfig;
+            var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+            if (env.ToLower() == "development")
+            {
+                _emailConfig = emailConfig;
+            }
+            else
+            {
+                emailConfig.From = Environment.GetEnvironmentVariable("EmailConfiguration:From");
+                emailConfig.SmtpServer = Environment.GetEnvironmentVariable("EmailConfiguration:SmtpServer");
+                emailConfig.Port = Int32.Parse(Environment.GetEnvironmentVariable("EmailConfiguration:Port"));
+                emailConfig.UserName = Environment.GetEnvironmentVariable("EmailConfiguration:Username");
+                emailConfig.Password = Environment.GetEnvironmentVariable("EmailConfiguration:Password");
+                _emailConfig = emailConfig;
+            }
         }
 
         public void SendEmail(Message message)
