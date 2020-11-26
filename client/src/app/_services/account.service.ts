@@ -72,7 +72,7 @@ export class AccountService {
     localStorage.removeItem('isSessionActive');
     localStorage.removeItem('attemptsRemaining');
     localStorage.removeItem('codeSendSuccess');
-    localStorage.removeItem('user_id');
+    localStorage.removeItem('user');
   }
 
 
