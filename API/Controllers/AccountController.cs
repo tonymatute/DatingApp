@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Authorization;
 using System;
 using Microsoft.Extensions.Configuration;
 using System.Web;
+using API.Helpers;
 
 namespace API.Controllers
 {
@@ -68,14 +69,11 @@ namespace API.Controllers
             {
                 urlPath = Environment.GetEnvironmentVariable("ReturnPaths:ConfirmEmail");
             }
-            var uriBuilder = new UriBuilder(urlPath);
-            var query = HttpUtility.ParseQueryString(uriBuilder.Query);
-            query["token"] = token;
-            query["userid"] = user.Id.ToString();
-            uriBuilder.Query = query.ToString();
-            var confirmationLink = uriBuilder.ToString();
 
-            var message = new Message(new string[] { user.Email }, "Confirmation email link", confirmationLink, null);
+            var confirmationLink = URLBuilder.BuildUrl(urlPath, token, user.Id.ToString());
+
+            var message = new Message(new string[] { user.Email }, "Confirmation Email Link",
+                URLBuilder.BuildContext(URLBuilder.MessageType.ConfirmEmail, confirmationLink, user.UserName), null);
             await _emailSender.SendEmailAsync(message);
 
             var roleResult = await _userManager.AddToRoleAsync(user, "Member");
@@ -132,6 +130,8 @@ namespace API.Controllers
         public async Task<ActionResult> ConfirmEmail(ConfirmEmailDto confirmEmail)
         {
             var user = await _userManager.FindByIdAsync(confirmEmail.userid);
+            if (user == null) return Unauthorized("Username not Found");
+
             var confirm = await _userManager.ConfirmEmailAsync(user, confirmEmail.token);
             if (confirm.Succeeded) return Ok();
 
@@ -141,6 +141,8 @@ namespace API.Controllers
         [HttpPost("forgotpassword")]
         public async Task<ActionResult> ForgotPassword(ForgotPasswordDto forgotPassword)
         {
+            if (forgotPassword.Email == null) return BadRequest("Missing Email!");
+
             var user = await _userManager.Users
                         .IgnoreQueryFilters()
                         .Where(e => e.Email.ToLower() == forgotPassword.Email.ToLower())
@@ -149,9 +151,9 @@ namespace API.Controllers
             if (user == null) return Unauthorized("Username not Found");
 
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            
             string urlPath = "";
-            var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
-            if (env.ToLower() == "development")
+            if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT").ToLower() == "development")
             {
                 urlPath = _config["returnPaths:PasswordChange"];
             }
@@ -159,14 +161,11 @@ namespace API.Controllers
             {
                 urlPath = Environment.GetEnvironmentVariable("ReturnPaths:PasswordChange");                
             }
-            var uriBuilder = new UriBuilder(urlPath);
-            var query = HttpUtility.ParseQueryString(uriBuilder.Query);
-            query["token"] = token;
-            query["userid"] = user.Id.ToString();
-            uriBuilder.Query = query.ToString();
-            var changePasswordLink = uriBuilder.ToString();
+            
+            var changePasswordLink = URLBuilder.BuildUrl(urlPath, token, user.Id.ToString());
 
-            var message = new Message(new string[] { user.Email }, "Change Password link", changePasswordLink, null);
+            var message = new Message(new string[] { user.Email }, "Reset Password link", 
+                URLBuilder.BuildContext(URLBuilder.MessageType.ResetPassword, changePasswordLink,user.UserName), null);
             await _emailSender.SendEmailAsync(message);
 
             return Ok();
