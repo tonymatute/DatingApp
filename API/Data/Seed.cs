@@ -34,6 +34,7 @@ namespace API.Data
             {
                 user.Photos.First().IsApproved = true;
                 user.UserName = user.UserName.ToLower();
+                user.EmailConfirmed = true;
                 await userManager.CreateAsync(user, "Pa$$w0rd");
                 await userManager.AddToRoleAsync(user, "Member");
             }
